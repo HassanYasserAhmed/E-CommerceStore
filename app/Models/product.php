@@ -11,6 +11,8 @@ class product extends Model
 {
 
     use HasFactory;
+    protected $hidden = ['created_at','updated_at','deleted_at','image'];
+    protected $appends = ['image_url'];
        protected $fillable = [
     'name', 'slug', 'description', 'image', 'category_id', 'store_id',
     'price', 'compare_price', 'status','quantity'
@@ -35,7 +37,12 @@ class product extends Model
     }
     
     protected static function booted() {
+
         static::addGlobalScope('store',new StoreScope());
+
+        static::creating(function(product $product) {
+            $product->slug = Str::slug($product->name); 
+        });
     }
     public function scopeActive(Builder $builder) {
         $builder->where('status','=','active');
@@ -90,12 +97,6 @@ public function scopeFilter(Builder $builder,$filters) {
 
     //    $builder->whereRaw('Exists (select 1 from product_tag where product_tag.product_id = products.id and product_tag.tag_id = ?',[$value]);
     });
-
-
-
-
-
-
 }
 
 }

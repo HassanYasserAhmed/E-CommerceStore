@@ -39,7 +39,6 @@ class FortifyServiceProvider extends ServiceProvider
                   if(Config::get('fortify.guard') == 'admin') {
                         return redirect()->intended('admin/dashboard');
                     }
-                    dd('front');
                     return redirect()->intended('/');
                 
                 });
