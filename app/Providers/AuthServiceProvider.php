@@ -23,6 +23,13 @@ class AuthServiceProvider extends ServiceProvider
         $this->app->bind('abilities',function(){
            return  include base_path('data/abilities.php');
       });
+
+
+      Gate::before(function($user,$ability) {
+        if($user->super_admin) {
+            return true;
+        }
+      });
     }
 
     /**

@@ -19,4 +19,7 @@ return [
     'users.delete' => 'Delete users',
     'roles.view' => 'View roles',
     'roles.create' => 'Create roles',
+    'roles.update' => 'Update roles',
+    'roles.delete' => __('Delete roles'),
+    'roles.force-delete' => __('Force delete roles'),
 ];

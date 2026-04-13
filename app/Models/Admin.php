@@ -18,5 +18,9 @@ class Admin extends User
     protected $fillable = [
         'name','email','phone_number','password','super_admin','status'
     ];
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 }
 

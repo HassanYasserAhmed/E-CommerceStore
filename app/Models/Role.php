@@ -18,16 +18,20 @@ class Role extends Model
     public static function createWithAbilities($request) {
         DB::beginTransaction();
             try {
+
+            $rows = [];
+            $now = now();
                 $role = Role::create([
                     'name' => $request->post('name')
                 ]);
                 foreach ($request->post('abilities') as $ability => $value) {
-                RoleAbility::create([
+                $rows[] = [
                         'role_id' => $role->id,
                         'ability' => $ability,
                         'type' => $value
-                ]);
+                ];
                 };
+                RoleAbility::insert($rows);
 
                 DB::commit();
             } catch (\Exception $e) {
@@ -37,35 +41,36 @@ class Role extends Model
     }
 
     public function updateWithAbilities($request) {
-        DB::beginTransaction();
-            try {
+        return DB::transaction(function() use ($request) {
+    $rows = [];
+    $abilities = $request->post('abilities', []);
+        if (!empty($abilities)) {
+                
                 $this->update([
-                    'name' => $request->post('name')
-                ]);
-
-                foreach($request->post('abilities') as $ability => $value) {
-                    RoleAbility::updateOrCreate([
-                        'role_id' => $this->id,
-                        'ability' => $ability,
-                    ],[
-                         'type' => $value
+                        'name' => $request->post('name')
                     ]);
-                };
-            //  RoleAbility::where('role_id',$this->id)->delete();
-            //     foreach ($request->post('abilities') as $ability => $value) {
-            //     RoleAbility::updateOrCreate([
-            //             'role_id' => $this->id,
-            //             'ability' => $ability,
-                       
-            //     ],[
-            //          'type' => $value
-            //     ]);
-            //     };
 
-                DB::commit();
-            } catch (\Exception $e) {
-                DB::rollBack();
-            };
-        return $this;
+                    foreach($abilities as $ability => $value) {
+                    $rows[] = [
+                            'role_id' => $this->id,
+                            'ability' => $ability,
+                            'type' => $value,
+                        ];
+                    };
+
+                RoleAbility::upsert(
+                    $rows,
+                    ['role_id', 'ability'],   // unique key
+                    ['type']   // fields to update
+                    );
+
+                // 2) حذف abilities القديمة التي لم تعد موجودة
+                RoleAbility::where('role_id', $this->id)
+                    ->whereNotIn('ability', array_keys($abilities))
+                    ->delete();
+
+        }else {
+                RoleAbility::where('role_id', $this->id)->delete();
+        }});
     }
 }

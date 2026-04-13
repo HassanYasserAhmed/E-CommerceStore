@@ -1,9 +1,10 @@
 @extends('layouts.dashboard')
 
-@section('title','roles')
+@section('title','Trashed categories')
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">roles</li>
+    <li class="breadcrumb-item">categories</li>
+    <li class="breadcrumb-item active">Trashed</li>
 @endsection
 
  <base href="/public"> @section('content')
@@ -18,8 +19,7 @@
     <button type="submit" class="btn btn-dark mt-2">Search</button>
  </form>
  <div class="mb-5">
-    <a href={{ route('roles.create') }} class="btn btn-sm btn-outline-primary">create</a>
-    {{-- <a href={{ route('roles.trash') }} class="btn btn-sm btn-outline-secondary">Trashed</a> --}}
+    <a href={{ route('categories.index') }} class="btn btn-sm btn-outline-primary">Back</a>
  </div>
  <x-alert type="success"/>
  <x-alert type="info"/>
@@ -27,35 +27,45 @@
         <thead>
             <tr>
                 <td>ID</td>
+                <td>Image</td>
                 <td>Name</td>
-                <td>Created At</td>
+                <td>Deleted At</td>
                 <td></td>
                 <td colspan="2"></td>
             </tr>
         </thead>
         <tbody>
-            @forelse ($roles as $Role)
+            @forelse ($categories as $category)
             <tr>
-            <td>{{ $Role->id }}</td>
-            <td><a href="{{ route('roles.edit',$Role->id) }}">{{ $Role->name }}</a></td>
-            <td>{{ $Role->created_at }}</td>
-            <td>
-                <a href="{{ route('roles.edit',$Role->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
+            <td>{{ $category->id }}</td>
+                <td>
+
+                <img src="{{ asset('storage/images_folder/'.$category->image) }}" />
+                
+                </td>
+            <td>{{ $category->name }}</td>
+            <td>{{ $category->deleted_at }}</td>
+           <td>
+                <form action="{{ route('categories.restore',$category->id) }}" method="post">
+                    @csrf
+                    @method('put')
+                  <button type="submit" class="btn btn-sm btn-info">Restore</button>
+                </form>
             </td>
             <td>
-                <form action="{{ route('roles.destroy',$Role->id) }}" method="post">
+                <form action="{{ route('categories.forceDelete',$category->id) }}" method="post">
                     @csrf
                     @method('delete')
-                  <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                  <button type="submit" class="btn btn-sm btn-danger">Force Delete</button>
                 </form>
             </td>
           </tr>
           @empty
           <tr>
-            <td colspan="4">No roles Found</td>
+            <td colspan="7">No Categories Found</td>
           </tr>
           @endforelse
         </tbody>
     </table>
-    {{ $roles->withQueryString()->links() }}
+    {{ $categories->withQueryString()->appends(['search'=>'yes'])->links() }}
 @endsection

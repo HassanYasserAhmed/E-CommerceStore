@@ -1,5 +1,5 @@
 <div class="form-group">
-       <x-form.input name="name" :value="$role" />
+       <x-form.input name="name" placeholder="RoleName " :value="$role" />
 </div>
 
 <fieldset>

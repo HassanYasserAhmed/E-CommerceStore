@@ -1,9 +1,9 @@
 @extends('layouts.dashboard')
 
-@section('title','roles')
+@section('title','admins')
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item active">roles</li>
+    <li class="breadcrumb-item active">admins</li>
 @endsection
 
  <base href="/public"> @section('content')
@@ -18,8 +18,10 @@
     <button type="submit" class="btn btn-dark mt-2">Search</button>
  </form>
  <div class="mb-5">
-    <a href={{ route('roles.create') }} class="btn btn-sm btn-outline-primary">create</a>
-    {{-- <a href={{ route('roles.trash') }} class="btn btn-sm btn-outline-secondary">Trashed</a> --}}
+    @if(Auth::user()->can('admins.create'))
+    <a href={{ route('admin.create') }} class="btn btn-sm btn-outline-primary">create</a>
+    @endif
+    <a href={{ route('admin.trash') }} class="btn btn-sm btn-outline-secondary">Trashed</a>
  </div>
  <x-alert type="success"/>
  <x-alert type="info"/>
@@ -28,34 +30,40 @@
             <tr>
                 <td>ID</td>
                 <td>Name</td>
+                <td>Email</td>
+                <td>Role</td>
                 <td>Created At</td>
-                <td></td>
                 <td colspan="2"></td>
             </tr>
         </thead>
         <tbody>
-            @forelse ($roles as $Role)
+            @forelse ($admins as $admin)
             <tr>
-            <td>{{ $Role->id }}</td>
-            <td><a href="{{ route('roles.edit',$Role->id) }}">{{ $Role->name }}</a></td>
-            <td>{{ $Role->created_at }}</td>
+            <td>{{ $admin->id }}</td>
+            <td><a href="{{ route('admin.show',$admin->id) }}">{{ $admin->name }}</a></td>
+            <td>{{ $admin->email }}</td>
+            <td></td>
+            <td>{{ $admin->created_at }}</td>
             <td>
-                <a href="{{ route('roles.edit',$Role->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
+                @can('admins.edit')
+                <a href="{{ route('admin.edit',$admin->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
+                @endcan
             </td>
             <td>
-                <form action="{{ route('roles.destroy',$Role->id) }}" method="post">
+                @can('admins.delete')
+                <form action="{{ route('admin.destroy',$admin->id) }}" method="post">
                     @csrf
                     @method('delete')
                   <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                 </form>
+                @endcan
             </td>
           </tr>
           @empty
           <tr>
-            <td colspan="4">No roles Found</td>
+            <td colspan="7">No Categories Found</td>
           </tr>
           @endforelse
         </tbody>
     </table>
-    {{ $roles->withQueryString()->links() }}
 @endsection

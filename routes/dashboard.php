@@ -1,4 +1,6 @@
 <?php
+
+use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\ProductsController;
 use Illuminate\support\Facades\Route;
 use App\Http\Controllers\Dashboard\CategoriesController;
@@ -29,6 +31,7 @@ Route::delete('/categories/{category}/force-delete',[CategoriesController::class
     'categories'=> CategoriesController::class,
     'roles' => RoleController::class
   ]);
-
+Route::resource('dashboard/admin', AdminController::class);
+Route::get('dashboard/admin/trash', [AdminController::class, 'trash'])->name('admin.trash');
 });
 
