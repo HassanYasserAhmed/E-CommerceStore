@@ -14,11 +14,11 @@ class ProductPolicy extends ModelPolicy
         }
     }
 
-  public function view($user, product $product): bool
-    {
-        return $user->hasAbility('product.view')
-                && $product->store_id == $user->store_id;
-    }
+//   public function view($user, product $product): bool
+//     {
+//         return $user->hasAbility('product.view')
+//                 && $product->store_id == $user->store_id;
+//     }
 
     // /**
     //  * Determine whether the user can view any models.

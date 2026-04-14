@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use Error;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -24,7 +26,14 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            //
+            Log::debug($e->getMessage());
+        });
+
+        $this->renderable(function(Error $e){
+            return redirect()->route('home')->with([
+                    'message'=>'something was wrong please try again',
+                ]
+            );
         });
     }
 }

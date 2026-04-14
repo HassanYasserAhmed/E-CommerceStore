@@ -45,18 +45,19 @@
             <td></td>
             <td>{{ $admin->created_at }}</td>
             <td>
-                @can('admins.edit')
+                @can('edite',$admin)
                 <a href="{{ route('admin.edit',$admin->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
                 @endcan
             </td>
             <td>
-                @can('admins.delete')
+                @can('delete',App\Models\Admin::class)
                 <form action="{{ route('admin.destroy',$admin->id) }}" method="post">
                     @csrf
                     @method('delete')
                   <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                 </form>
                 @endcan
+
             </td>
           </tr>
           @empty

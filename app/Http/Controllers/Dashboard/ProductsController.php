@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Product;
+use App\Models\product;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use Illuminate\Support\Str;
@@ -17,9 +17,9 @@ class ProductsController extends Controller
     public function __construct() {
         $this->authorizeResource(Product::class,'product');
     }
+    
     public function index()
     {
-        $this->authorize('view', Product::class);
         $products = Product::with(['category','store'])->paginate(5);
         return view('dashboard.products.index',compact('products'));
     }
@@ -29,7 +29,6 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Product::class);
         $categories = Category::all();
         $product = new Product();
         return view('dashboard.products.create',compact('product','categories'));
@@ -40,8 +39,7 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('store', Product::class);
-        $request->validate([
+            $request->validate([
             'name'=>['required','string','max:255'],
             'description'=>['nullable','string'],
             'price'=>['required','numeric','min:0'],
@@ -66,8 +64,6 @@ class ProductsController extends Controller
      */
     public function show(string $id)
     {
-          $this->authorize('show', Product::class);
-
         $product = Product::findOrFail($id);
         return view('dashboard.products.show',compact('product'));
     }
@@ -77,8 +73,6 @@ class ProductsController extends Controller
      */
     public function edit(string $id)
     {
-          $this->authorize('edit', Product::class);
-
         $product = Product::findOrFail($id);
         $categories = Category::all();
         $tags = implode(',',$product->tags()->pluck('name')->toArray());
@@ -90,8 +84,6 @@ class ProductsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-          $this->authorize('update', Product::class);
-
         $request->validate([
             'name'=>['required','string','max:255'],
             'description'=>['nullable','string'],
@@ -126,9 +118,7 @@ class ProductsController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->authorize('delete', Product::class);
-
-        $product = Product::findOrFail($id);
+        $product = Product::find(-2);
 
         $product->delete();
 

@@ -1,5 +1,9 @@
 <x-front-layout>
   <!-- Start Hero Area -->
+ <div></div>
+   @if(session()->has('message'))
+        <div class="alert alert-danger text-center">{{ session('message') }}</div>
+    @endif
     <section class="hero-area">
         <div class="container">
             <div class="row">

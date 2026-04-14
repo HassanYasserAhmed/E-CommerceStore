@@ -49,14 +49,18 @@
             <td>{{ $Product->store->name}}</td>
             <td>{{ $Product->created_at }}</td>
             <td>
+                @can('edite',$Product)
                 <a href="{{ route('products.edit',$Product->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
+                @endcan
             </td>
             <td>
+                @can('destroy',App\Models\Product::class)
                 <form action="{{ route('products.destroy',$Product->id) }}" method="post">
                     @csrf
                     @method('delete')
                   <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                 </form>
+                @endcan
             </td>
           </tr>
           @empty

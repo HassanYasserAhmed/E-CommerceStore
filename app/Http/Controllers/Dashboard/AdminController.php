@@ -12,7 +12,9 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      */
-   
+    public function __constract() {
+        $this->authorizeResource(Admin::class,'admin');
+    }
     public function index()
     {
         $admins = Admin::all();

@@ -24,9 +24,10 @@ class ModelPolicy
       $ability = $class_name.'.'.Str::kebab($name);
       $user = $arguments[0];
       $model = $arguments[1] ?? null;
-      if($model->store_id != $user->store_id) {
-        return false;
-      }
+
+      // if($model->store_id != $user->store_id) {
+      //   return false;
+      // }
         return $user->hasAbility($ability);
     }
 }
