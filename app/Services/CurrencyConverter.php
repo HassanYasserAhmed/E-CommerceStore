@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\CustomErrorException;
 use Illuminate\Support\Facades\Http;
 
 class CurrencyConverter {
@@ -13,7 +14,7 @@ class CurrencyConverter {
     }
 
     public function convert($from,$to,$amount=1) {
-        $response =Http::baseUrl($this->baseUrl)
+            $response =Http::baseUrl($this->baseUrl)
             ->get('fetch-one',[
                 'api_key' => $this->apiKey,
                 'from' =>$from,
@@ -21,6 +22,9 @@ class CurrencyConverter {
             ]);
 
             $result = $response->json();
+            if($result['error']) {
+              throw new CustomErrorException($result['error']);
+            }
             return $result['result'][$to] * $amount;
     }
 
