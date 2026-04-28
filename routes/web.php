@@ -9,6 +9,7 @@ use App\Http\Controllers\Front\HomeController;
 use App\Http\Controllers\Front\PaymentsController;
 use App\Http\Controllers\Front\ProductsController;
 use App\Http\Controllers\SocialController;
+use App\Http\Controllers\StripeWebhooksController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,5 +57,6 @@ Route::post('orders/{order}/payment-intent', [PaymentsController::class, 'create
     ->name('orders.payment-intent.create');
 Route::get('orders/{order}pay/stripe/return', [PaymentsController::class, 'confirm'])
     ->name('stripe.return');
+Route::any('stripe/webhook', [StripeWebhooksController::class, 'handle'])->name('stripe.webhook');
 // require __DIR__.'/auth.php';
 require __DIR__.'/dashboard.php';
