@@ -26,8 +26,8 @@ class DeleteExpiredOrders implements ShouldQueue
      */
     public function handle(): void
     {
-        Order::whereDate('created_at','<',now()->subDays(7))
-            ->where('status','pending')
+        Order::whereDate('created_at', '<', now()->subDays(7))
+            ->where('status', 'pending')
             ->delete();
     }
 }

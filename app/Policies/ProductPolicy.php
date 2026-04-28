@@ -2,23 +2,25 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\product;
-use Illuminate\Auth\Access\Response;
+use App\Models\User;
 
 class ProductPolicy extends ModelPolicy
 {
-      public function before($user,$ability) {
-        if($user->super_admin) {
+    public function before($user, $ability)
+    {
+        if ($user->super_admin) {
             return true;
         }
     }
 
-//   public function view($user, product $product): bool
-//     {
-//         return $user->hasAbility('product.view')
-//                 && $product->store_id == $user->store_id;
-//     }
+    public function view($user, product $product): bool
+    {
+        // return $user->hasAbility('product.view')
+        //         && $product->store_id == $user->store_id;
+
+        return true;
+    }
 
     // /**
     //  * Determine whether the user can view any models.
@@ -65,7 +67,7 @@ class ProductPolicy extends ModelPolicy
     //  */
     // public function delete($user, product $product): bool
     // {
-    //     return $user->hasAbility('product.delete') 
+    //     return $user->hasAbility('product.delete')
     //             && $product->store_id == $user->store_id;
     // }
 

@@ -16,21 +16,23 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array<class-string, class-string>
      */
-   protected $policies = [
-    product::class => ProductPolicy::class,
-];
-      public function register() {
-         Gate::before(function($user,$ability) {
-        if($user->super_admin) {
-            return true;
-        }
-      }); 
-      
+    protected $policies = [
+        product::class => ProductPolicy::class,
+    ];
+
+    public function register()
+    {
+        Gate::before(function ($user, $ability) {
+            if ($user->super_admin) {
+                return true;
+            }
+        });
+
         parent::register();
-        $this->app->bind('abilities',function(){
-           return  include base_path('data/abilities.php');
-      });
-      
+        $this->app->bind('abilities', function () {
+            return include base_path('data/abilities.php');
+        });
+
     }
 
     /**

@@ -6,23 +6,25 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use NumberFormatter;
 
-
-class Currency {
-
+class Currency
+{
     public function __invoke(...$params)
     {
-       return static::format(...$params);
+        return static::format(...$params);
     }
-    public static function format($amount,$currency = null) {
-        $baseCurrency = config('app.currency','USD');
-        $formater = new NumberFormatter(config('app.locale'),NumberFormatter::CURRENCY);
-        if($currency === null) {
-            $currency =Session::get('currency_code', $baseCurrency);
+
+    public static function format($amount, $currency = null)
+    {
+        $baseCurrency = config('app.currency', 'USD');
+        $formater = new NumberFormatter(config('app.locale'), NumberFormatter::CURRENCY);
+        if ($currency === null) {
+            $currency = Session::get('currency_code', $baseCurrency);
         }
-        if($currency !== $baseCurrency) {
-            $rate= Cache::get('currency_rate_'.$currency,0);
+        if ($currency !== $baseCurrency) {
+            $rate = Cache::get('currency_rate_'.$currency, 0);
             $amount = $amount * $rate;
         }
-        return $formater->formatCurrency($amount,$currency);
+
+        return $formater->formatCurrency($amount, $currency);
     }
 }

@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Filter;
-use App\Rules\Filter2;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,9 +12,10 @@ class CategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(request()->route('category')) {
+        if (request()->route('category')) {
             return Gate::allows('categories.update');
         }
+
         return Gate::allows('categories.create');
     }
 
@@ -25,33 +24,34 @@ class CategoryRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules($id=0): array
+    public function rules($id = 0): array
     {
         $request = $this->request->all();
-      $customValidate= function ($attrubute,$value,$fail) {
-                if($value == 'laravel') {
-                    $fail('The value of '.$attrubute.' cannot be '.$value);
-                }
-            };
+        $customValidate = function ($attrubute, $value, $fail) {
+            if ($value == 'laravel') {
+                $fail('The value of '.$attrubute.' cannot be '.$value);
+            }
+        };
 
         $id = $this->route('category');
+
         return [
-            'name'=>[
-                'required','alpha_dash','min:3','max:255','unique:categories,name,'.$id,'filter'
+            'name' => [
+                'required', 'alpha_dash', 'min:3', 'max:255', 'unique:categories,name,'.$id, 'filter',
             ],
-            'parent_id'=>[
-                'int','exists:categories,id'
+            'parent_id' => [
+                'int', 'exists:categories,id',
             ],
-            'image'=> [
-                'image','dimensions:min_length:100,min_height:100'
+            'image' => [
+                'image', 'dimensions:min_length:100,min_height:100',
             ],
-            'status'=>'in:active,archived',
-           
+            'status' => 'in:active,archived',
+
         ];
     }
-//    public function messages() {
-//     return [
-//         'name.required'=>'Category Name is required',
-//     ];
-//    }
+    //    public function messages() {
+    //     return [
+    //         'name.required'=>'Category Name is required',
+    //     ];
+    //    }
 }

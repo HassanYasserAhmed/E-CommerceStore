@@ -27,11 +27,12 @@ class EventServiceProvider extends ServiceProvider
         //       EmptyCart::class,
         // ]
         OrderCreated::class => [
-             DeductProductQuantity::class,
-             SendOrderCreatedNotification::class
+            DeductProductQuantity::class,
+            SendOrderCreatedNotification::class,
             //   EmptyCart::class,
-        ]
+        ],
     ];
+
     /**
      * Register any events for your application.
      */
@@ -39,6 +40,7 @@ class EventServiceProvider extends ServiceProvider
     {
         //
     }
+
     /**
      * Determine if events and listeners should be automatically discovered.
      */

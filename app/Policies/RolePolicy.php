@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class RolePolicy
 {
@@ -13,7 +12,7 @@ class RolePolicy
      */
     public function viewAny(User $user): bool
     {
-       return $user->hasAbility('roles.view');
+        return $user->hasAbility('roles.view');
     }
 
     /**
@@ -29,7 +28,7 @@ class RolePolicy
      */
     public function create($user): bool
     {
-       return $user->hasAbility('roles.create');
+        return $user->hasAbility('roles.create');
     }
 
     /**

@@ -14,16 +14,17 @@ class CheckUserType
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next,...$types): Response
+    public function handle(Request $request, Closure $next, ...$types): Response
     {
         $user = $request->user();
-        if(!$user) {
+        if (! $user) {
             return redirect()->route('login');
-        };
+        }
 
-    if(!in_array($user->type,$types ) && (!$user instanceOf Admin)) {
+        if (! in_array($user->type, $types) && (! $user instanceof Admin)) {
             abort(403);
-        };
+        }
+
         return $next($request);
     }
 }

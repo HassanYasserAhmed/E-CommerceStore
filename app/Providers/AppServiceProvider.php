@@ -4,10 +4,9 @@ namespace App\Providers;
 
 use App\Services\CurrencyConverter;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\ServiceProvider;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -15,7 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind('currency.converter',function(){
+        $this->app->bind('currency.converter', function () {
             return new CurrencyConverter(config('services.currency_converter.api_key'));
         });
     }
@@ -25,10 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        
-        validator::extend('filter',function($attribute,$value,$parameters,$validator){
+
+        validator::extend('filter', function ($attribute, $value, $parameters, $validator) {
             return $value != 'laravel';
-        },'The value of :attribute cannot be :value app service provider');
+        }, 'The value of :attribute cannot be :value app service provider');
 
         Paginator::useBootstrap();
     }

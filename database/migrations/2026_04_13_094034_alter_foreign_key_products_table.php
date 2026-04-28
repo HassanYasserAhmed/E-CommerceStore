@@ -15,9 +15,9 @@ return new class extends Migration
             $table->dropForeign(['category_id']);
 
             $table->foreign('category_id')
-              ->references('id')
-              ->on('categories')
-              ->restrictOnDelete();
+                ->references('id')
+                ->on('categories')
+                ->restrictOnDelete();
         });
     }
 

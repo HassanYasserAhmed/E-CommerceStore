@@ -12,12 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-              $table->id();
+            $table->id();
             $table->foreignId(('store_id'))->constrained('stores')->cascadeOnDelete();
-$table->foreignId('category_id')
-      ->nullable()
-      ->constrained('categories')
-      ->nullOnDelete();            $table->string('name');
+            $table->foreignId('category_id')
+                ->nullable()
+                ->constrained('categories')
+                ->nullOnDelete();
+            $table->string('name');
             $table->string('slug');
             $table->text('description')->nullable();
             $table->string('image')->nullable();
@@ -26,7 +27,7 @@ $table->foreignId('category_id')
             $table->json('options')->nullable();
             $table->float('rating')->default(0);
             $table->boolean('featured')->default(false);
-            $table->enum('status',['active','archived','draft'])->default('active');
+            $table->enum('status', ['active', 'archived', 'draft'])->default('active');
             $table->timestamps();
             $table->softDeletes();
         });

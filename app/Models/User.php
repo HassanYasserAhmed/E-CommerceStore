@@ -5,7 +5,6 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Concertns\HasRoles;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -17,9 +16,9 @@ class User extends Authenticatable
 {
     use HasApiTokens,
         HasFactory,
+        HasRoles,
         Notifiable,
-        TwoFactorAuthenticatable,
-        HasRoles;
+        TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -63,13 +62,18 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function profile() {
+    public function profile()
+    {
         return $this->hasOne(profile::class)->withDefault();
     }
-    public function setProviderTokenAttribute($value) {
+
+    public function setProviderTokenAttribute($value)
+    {
         $this->attributes['provider_token'] = Crypt::encrypt($value);
     }
-    public function getProviderTokenAttribute($value) {
+
+    public function getProviderTokenAttribute($value)
+    {
         return Crypt::decrypt($value);
     }
 }

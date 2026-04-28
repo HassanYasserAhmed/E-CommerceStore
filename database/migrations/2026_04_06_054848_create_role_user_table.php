@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('role_user', function (Blueprint $table) {
-           $table->morphs('Authorizable');
-           $table->foreignId('role_id')->constrained()->cascadeOnDelete();
+            $table->morphs('Authorizable');
+            $table->foreignId('role_id')->constrained()->cascadeOnDelete();
 
-           $table->primary(['Authorizable_type','Authorizable_id','role_id']);
+            $table->primary(['Authorizable_type', 'Authorizable_id', 'role_id']);
         });
     }
 

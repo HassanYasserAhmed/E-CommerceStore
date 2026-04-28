@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('parent_id')
                 ->nullable()
-                ->constrained('categories','id')
+                ->constrained('categories', 'id')
                 ->nullOnDelete();
             $table->string('name')->unique();
             $table->string('slug')->unique();
             $table->text('description');
-            $table->enum('status',['active','archived']);
+            $table->enum('status', ['active', 'archived']);
             $table->timestamps();
         });
     }

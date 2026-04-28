@@ -5,8 +5,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Crypt;
 use Symfony\Component\HttpFoundation\Response;
 
 class SetAppLocale
@@ -18,9 +16,10 @@ class SetAppLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-    
+
         $locale = request()->route('locale');
         App::setLocale($locale);
+
         return $next($request);
     }
 }

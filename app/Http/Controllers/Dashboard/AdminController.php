@@ -12,12 +12,15 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function __constract() {
-        $this->authorizeResource(Admin::class,'admin');
+    public function __constract()
+    {
+        $this->authorizeResource(Admin::class, 'admin');
     }
+
     public function index()
     {
         $admins = Admin::all();
+
         return view('dashboard.admin.index', compact('admins'));
     }
 
@@ -43,6 +46,7 @@ class AdminController extends Controller
     public function show(Admin $admin)
     {
         $admin->load('roles');
+
         return view('dashboard.admin.show', compact('admin'));
     }
 
@@ -53,6 +57,7 @@ class AdminController extends Controller
     {
         $roles = Role::all();
         $admin_roles = $admin->roles()->pluck('id')->toArray();
+
         return view('dashboard.admin.edite', compact('admin', 'roles', 'admin_roles'));
     }
 
@@ -62,6 +67,7 @@ class AdminController extends Controller
     public function update(Request $request, Admin $admin)
     {
         $admin->roles()->sync($request->roles);
+
         return redirect()->route('admin.index')->with('success', 'Admin updated successfully');
     }
 
@@ -72,9 +78,11 @@ class AdminController extends Controller
     {
         //
     }
+
     public function trash()
     {
         $admins = Admin::onlyTrashed()->get();
+
         return view('dashboard.admin.trash', compact('admins'));
     }
 }

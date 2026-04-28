@@ -9,7 +9,9 @@ use Illuminate\Notifications\Notifiable;
 class store extends Model
 {
     use HasFactory, Notifiable;
-    public function products() {
+
+    public function products()
+    {
         return $this->hasMany(product::class);
     }
 }

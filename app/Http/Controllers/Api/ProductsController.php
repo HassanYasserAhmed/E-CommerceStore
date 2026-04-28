@@ -3,25 +3,25 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ProductResource;
 use App\Models\product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProductsController extends Controller
 {
-    public function __construct() {
-        $this->authorizeResource(product::class,'product');
-        $this->middleware('auth:sanctum')->except(['index','show']);
+    public function __construct()
+    {
+        $this->authorizeResource(product::class, 'product');
+        $this->middleware('auth:sanctum')->except(['index', 'show']);
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $this->authorize('view', product::class);
 
-        return Product::filter($request->query())->with('category','store')->paginate(10);
+        return Product::filter($request->query())->with('category', 'store')->paginate(10);
     }
 
     /**
@@ -31,20 +31,21 @@ class ProductsController extends Controller
     {
         $this->authorize('create', product::class);
 
-          if(!$request->user()->tokenCan('product.create')) {
+        if (! $request->user()->tokenCan('product.create')) {
             return response()->json([
-                'message'=>'Unauthorized'
-            ],403);
+                'message' => 'Unauthorized',
+            ], 403);
         }
         $request->validate([
-            'name'=>'required|string|max:255',
-            'description'=>'nullable|string|max:255',
-            'category_id'=>'required|exists:categories,id',
-            'status'=>'in:active,inactive',
-            'price'=>'required|numeric |min:0',
-            'compare_price'=>'nullable|numeric|gt:price',
-        ]);        
-        $Product=Product::create($request->all());
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'status' => 'in:active,inactive',
+            'price' => 'required|numeric |min:0',
+            'compare_price' => 'nullable|numeric|gt:price',
+        ]);
+        $Product = Product::create($request->all());
+
         return $Product;
     }
 
@@ -53,30 +54,29 @@ class ProductsController extends Controller
      */
     public function show(Product $product)
     {
-        $this->authorize('view', $product);
-
-      return $product->load('category','store','tags');
+        return $product->load('category', 'store', 'tags');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,Product $product)
+    public function update(Request $request, Product $product)
     {
         $this->authorize('update', $product);
 
-    if(!$request->user()->tokenCan('product.update')) {
-        abort(403,'Unauthorized');
-    }
-         $request->validate([
-            'name'=>'sometimes|required|string|max:255',
-            'description'=>'nullable|string|max:255',
-            'category_id'=>'required|exists:categories,id',
-            'status'=>'in:active,inactive',
-            'price'=>'required|numeric |min:0',
-            'compare_price'=>'nullable|numeric|gt:price',
-        ]);        
+        if (! $request->user()->tokenCan('product.update')) {
+            abort(403, 'Unauthorized');
+        }
+        $request->validate([
+            'name' => 'sometimes|required|string|max:255',
+            'description' => 'nullable|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'status' => 'in:active,inactive',
+            'price' => 'required|numeric |min:0',
+            'compare_price' => 'nullable|numeric|gt:price',
+        ]);
         $product->update($request->all());
+
         return $product;
     }
 
@@ -85,15 +85,16 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-         $this->authorize('delete', product::class);
-        
-        if(!Auth::user()->tokenCan('product.delete')) {
-            abort(403,'Unauthorized');
+        $this->authorize('delete', product::class);
+
+        if (! Auth::user()->tokenCan('product.delete')) {
+            abort(403, 'Unauthorized');
         }
-     $product= Product::destroy(19);
+        $product = Product::destroy(19);
+
         return response()->json([
-            'message'=>'Product deleted successfully',
-            'product'=>$product
-        ],200);
+            'message' => 'Product deleted successfully',
+            'product' => $product,
+        ], 200);
     }
 }

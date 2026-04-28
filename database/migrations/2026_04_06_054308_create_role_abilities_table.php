@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('role_abilities', function (Blueprint $table) {
-           $table->id();
+            $table->id();
 
-           $table->foreignId('role_id')->constrained()->cascadeOnDelete();
-           $table->string('ability');
+            $table->foreignId('role_id')->constrained()->cascadeOnDelete();
+            $table->string('ability');
 
-           $table->enum('type',['allow','deny','inherit']);
-           
-           $table->unique(['role_id','ability']);
+            $table->enum('type', ['allow', 'deny', 'inherit']);
+
+            $table->unique(['role_id', 'ability']);
         });
     }
 

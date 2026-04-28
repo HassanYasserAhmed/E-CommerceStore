@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('carts', function (Blueprint $table) {
-            $table->unique(['cookie_id','product_id']);
+            $table->unique(['cookie_id', 'product_id']);
         });
     }
 

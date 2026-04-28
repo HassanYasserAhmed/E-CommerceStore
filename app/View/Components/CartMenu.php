@@ -2,16 +2,18 @@
 
 namespace App\View\Components;
 
+use App\Facades\Cart;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use App\Facades\Cart;
+
 class CartMenu extends Component
 {
     /**
      * Create a new component instance.
      */
     public $items;
+
     public $total;
 
     public function __construct()

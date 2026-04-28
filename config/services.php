@@ -33,14 +33,18 @@ return [
     'currency_converter' => [
         'api_key' => env('CURRENCY_CONVERTER_API_KEY'),
     ],
+    'stripe' => [
+        'publishable_key' => env('STRIPE_PUBLISHABLE_KEY'),
+        'secret_key' => env('STRIPE_SECRET_KEY'),
+    ],
     'google' => [
-        'client_id'=>env('GOOGLE_CLIENT_ID'),
-        'client_secret'=>env('GOOGLE_CLIENT_SECRET'),
-        'redirect'=>env('GOOGLE_REDIRECT_URI'),
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
     'facebook' => [
-        'client_id'=>env('FACEBOOK_CLIENT_ID'),
-        'client_secret'=>env('FACEBOOK_CLIENT_SECRET'),
-        'redirect'=>env('FACEBOOK_REDIRECT_URI'),
-    ]
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+        'redirect' => env('FACEBOOK_REDIRECT_URI'),
+    ],
 ];

@@ -9,12 +9,13 @@ use Illuminate\View\Component;
 class Nav extends Component
 {
     public $items;
+
     /**
      * Create a new component instance.
      */
     public function __construct()
     {
-        $this->items  = $this->prepareItems(config('nav'));
+        $this->items = $this->prepareItems(config('nav'));
     }
 
     /**
@@ -24,14 +25,17 @@ class Nav extends Component
     {
         return view('components.nav');
     }
-    public function prepareItems($items) {
+
+    public function prepareItems($items)
+    {
         $user = auth()->user();
 
-        foreach($items as $key => $item) {
-            if(isset($item['ability']) && !$user->can($item['ability'])) {
-              unset($items[$key]);
+        foreach ($items as $key => $item) {
+            if (isset($item['ability']) && ! $user->can($item['ability'])) {
+                unset($items[$key]);
             }
         }
+
         return $items;
     }
 }

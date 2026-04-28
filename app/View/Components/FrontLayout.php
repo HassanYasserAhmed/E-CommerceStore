@@ -12,9 +12,10 @@ class FrontLayout extends Component
      * Create a new component instance.
      */
     public $title;
+
     public function __construct($title = null)
     {
-        $this->title=$title ?? config('app.name');
+        $this->title = $title ?? config('app.name');
     }
 
     /**

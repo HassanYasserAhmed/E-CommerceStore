@@ -5,11 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RoleAbility extends Model
+class Payment extends Model
 {
-    protected $fillable = ['role_id', 'ability', 'type'];
-
-    public $timestamps = false;
-
     use HasFactory;
 }

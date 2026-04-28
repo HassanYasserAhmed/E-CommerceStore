@@ -2,8 +2,6 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-
 class AdminPolicy extends ModelPolicy
 {
     /**
@@ -13,5 +11,4 @@ class AdminPolicy extends ModelPolicy
     {
         //
     }
-  
 }

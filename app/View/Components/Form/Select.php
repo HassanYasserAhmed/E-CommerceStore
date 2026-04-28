@@ -7,7 +7,9 @@ use Illuminate\View\Component;
 class Select extends Component
 {
     public $name;
+
     public $options;
+
     public $selected;
 
     public function __construct($name, $options = [], $selected = null)

@@ -3,26 +3,28 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\ImportProducts;
-use Illuminate\Http\Request;
-use App\Models\product;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
-use Illuminate\Support\Str;
+use App\Models\product;
 use App\Models\Tag;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
 class ProductsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function __construct() {
-        $this->authorizeResource(Product::class,'product');
+    public function __construct()
+    {
+        // $this->authorizeResource(Product::class,'product');
     }
-    
+
     public function index()
     {
-        $products = Product::with(['category','store'])->paginate(5);
-        return view('dashboard.products.index',compact('products'));
+        $products = Product::with(['category', 'store'])->paginate(5);
+
+        return view('dashboard.products.index', compact('products'));
     }
 
     /**
@@ -31,8 +33,9 @@ class ProductsController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $product = new Product();
-        return view('dashboard.products.create',compact('product','categories'));
+        $product = new Product;
+
+        return view('dashboard.products.create', compact('product', 'categories'));
     }
 
     /**
@@ -40,24 +43,23 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-            $request->validate([
-            'name'=>['required','string','max:255'],
-            'description'=>['nullable','string'],
-            'price'=>['required','numeric','min:0'],
-            'quantity'=>['required','integer','min:0'],
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'quantity' => ['required', 'integer', 'min:0'],
         ]);
         $request->merge([
-            'slug' =>Str::slug($request->name)
+            'slug' => Str::slug($request->name),
         ]);
 
-
-        $product = new Product();
+        $product = new Product;
 
         $product->fill($request->all());
         $product->store_id = Auth::user()->store_id;
         $product->save();
 
-        return redirect()->route('products.index')->with('success','Product created successfully');
+        return redirect()->route('products.index')->with('success', 'Product created successfully');
     }
 
     /**
@@ -66,7 +68,8 @@ class ProductsController extends Controller
     public function show(string $id)
     {
         $product = Product::findOrFail($id);
-        return view('dashboard.products.show',compact('product'));
+
+        return view('dashboard.products.show', compact('product'));
     }
 
     /**
@@ -76,8 +79,9 @@ class ProductsController extends Controller
     {
         $product = Product::findOrFail($id);
         $categories = Category::all();
-        $tags = implode(',',$product->tags()->pluck('name')->toArray());
-        return view('dashboard.products.edite',compact('product','categories','tags'));
+        $tags = implode(',', $product->tags()->pluck('name')->toArray());
+
+        return view('dashboard.products.edite', compact('product', 'categories', 'tags'));
     }
 
     /**
@@ -86,32 +90,32 @@ class ProductsController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name'=>['required','string','max:255'],
-            'description'=>['nullable','string'],
-            'price'=>['required','numeric','min:0'],
-            'quantity'=>['required','integer','min:0'],
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'price' => ['required', 'numeric', 'min:0'],
+            'quantity' => ['required', 'integer', 'min:0'],
         ]);
 
-
         $product = Product::findOrFail($id);
-       $product->update($request->except('tags'));
+        $product->update($request->except('tags'));
 
-       $tags = explode(',',$request->post('tags'));
-       $tag_ids = [];
-       $saved_tags = Tag::all();
-       foreach($tags as $t_name) {
-        $slug = Str::slug($t_name);
-        $tag = $saved_tags->where('slug',$slug)->first();
-        if(!$tag) {
-         $tag= Tag::create([
-                'name'=>$t_name,
-                'slug'=>$slug
-            ]);
+        $tags = explode(',', $request->post('tags'));
+        $tag_ids = [];
+        $saved_tags = Tag::all();
+        foreach ($tags as $t_name) {
+            $slug = Str::slug($t_name);
+            $tag = $saved_tags->where('slug', $slug)->first();
+            if (! $tag) {
+                $tag = Tag::create([
+                    'name' => $t_name,
+                    'slug' => $slug,
+                ]);
+            }
+            $tag_ids[] = $tag->id;
         }
-        $tag_ids[]=$tag->id;
-       }
-       $product->tags()->sync($tag_ids);
-       return redirect()->route('products.index')->with('success','Product updated successfully');
+        $product->tags()->sync($tag_ids);
+
+        return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
 
     /**
@@ -123,6 +127,6 @@ class ProductsController extends Controller
 
         $product->delete();
 
-        return redirect()->route('products.index')->with('success','Product deleted successfully');
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully');
     }
 }

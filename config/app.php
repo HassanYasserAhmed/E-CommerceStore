@@ -72,7 +72,7 @@ return [
 
     'timezone' => 'UTC',
 
-    'currency'=>'USD',
+    'currency' => 'USD',
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
@@ -166,7 +166,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-         App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Laravel\Fortify\FortifyServiceProvider::class,

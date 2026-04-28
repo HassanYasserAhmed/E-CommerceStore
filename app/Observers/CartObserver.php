@@ -4,16 +4,19 @@ namespace App\Observers;
 
 use App\Models\Cart;
 use Illuminate\Support\Str;
+
 class CartObserver
 {
     /**
      * Handle the Cart "created" event.
      */
-    public function creating(Cart $cart) { 
+    public function creating(Cart $cart)
+    {
         $cart->id = Str::uuid();
         $cart->cookie_id = Cart::getCookieId();
-        
+
     }
+
     public function created(Cart $cart): void
     {
         //

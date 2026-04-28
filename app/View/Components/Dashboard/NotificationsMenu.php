@@ -6,19 +6,22 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
+
 class NotificationsMenu extends Component
 {
     /**
      * Create a new component instance.
      */
     public $notifications;
+
     public $newCount;
+
     public function __construct($count = 10)
     {
         $user = Auth::user();
-        $this->notifications =$user->notifications()->take($count)->get();
+        $this->notifications = $user->notifications()->take($count)->get();
 
-        $this->newCount= $user->unreadNotifications()->count();
+        $this->newCount = $user->unreadNotifications()->count();
     }
 
     /**

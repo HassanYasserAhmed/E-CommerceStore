@@ -20,9 +20,9 @@ return new class extends Migration
                 ->nullOnDelete();
             $table->string('payment_method');
             $table->string('number')->unique();
-            $table->enum('status',['pending','processing','delivering','complited','cancelled','refunded'])
+            $table->enum('status', ['pending', 'processing', 'delivering', 'complited', 'cancelled', 'refunded'])
                 ->default('pending');
-            $table->enum('payment_status',['pending','paied','failed']);
+            $table->enum('payment_status', ['pending', 'paied', 'failed']);
             $table->timestamps();
         });
     }

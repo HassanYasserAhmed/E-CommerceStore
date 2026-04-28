@@ -5,63 +5,73 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Pivot;
-use Illuminate\Support\Str;
 
 class Order extends Model
 {
     use HasFactory;
+
     protected $table = 'orders';
+
     protected $fillable = [
-       'id', 'store_id','user_id','payment_method','status','paymnt_status',
+        'id', 'store_id', 'user_id', 'payment_method', 'status', 'paymnt_status',
     ];
 
-
-    public function store() {
+    public function store()
+    {
         return $this->belongsTo(store::class);
     }
-    public function user(){
+
+    public function user()
+    {
         return $this->belongsTo(User::class)->withDefault([
-            'name'=>'Guest Customer'
+            'name' => 'Guest Customer',
         ]);
     }
-    public function products() {
-        return $this->belongsToMany(Product::class,'order_items','order_id','product_id','id','id')
-        ->using(OrderItem::class)
-        ->withPivot([
-            'product_name','price','quantity','options',
-        ]);
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'order_items', 'order_id', 'product_id', 'id', 'id')
+            ->using(OrderItem::class)
+            ->withPivot([
+                'product_name', 'price', 'quantity', 'options',
+            ]);
     }
-    public function addresses() {
+
+    public function addresses()
+    {
         return $this->hasMany(OrderAddress::class);
     }
-    public function billingAddress() {
-        return $this->hasOne(OrderAddress::class,'order_id','id')
-            ->where('type','=','billing');
+
+    public function billingAddress()
+    {
+        return $this->hasOne(OrderAddress::class, 'order_id', 'id')
+            ->where('type', '=', 'billing');
     }
 
-
-        public function shippingngAddress() {
-        return $this->hasOne(OrderAddress::class,'order_id','id')
-            ->where('type','=','shipping');
+    public function shippingngAddress()
+    {
+        return $this->hasOne(OrderAddress::class, 'order_id', 'id')
+            ->where('type', '=', 'shipping');
     }
+
     public static function booted()
     {
-        static::creating(function(Order $order){
+        static::creating(function (Order $order) {
             $order->number = Order::getNextOrderNumber();
         });
     }
 
-    public static function getNextOrderNumber() {
+    public static function getNextOrderNumber()
+    {
         $year = Carbon::now()->year;
 
-        $number = Order::whereYear('created_at',$year)->max('number');
+        $number = Order::whereYear('created_at', $year)->max('number');
 
-        if($number) {
+        if ($number) {
             return $number + 1;
         }
 
-        return $year . '0001';
+        return $year.'0001';
 
     }
 }

@@ -14,7 +14,7 @@ class Filter implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if($value == 'laravel') {
+        if ($value == 'laravel') {
             $fail('from custom rule in role folder The value of '.$attribute.' cannot be '.$value);
         }
     }

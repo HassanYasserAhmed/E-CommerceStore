@@ -5,8 +5,6 @@ namespace App\Listeners;
 use App\Events\OrderCreated;
 use App\Models\User;
 use App\Notifications\OrderCreatedNotification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Notification;
 
 class SendOrderCreatedNotification
@@ -24,10 +22,10 @@ class SendOrderCreatedNotification
      */
     public function handle(OrderCreated $event): void
     {
-        $order= $event->order;
-        $users= User::where('store_id','=',$order->store_id)->get();
+        $order = $event->order;
+        $users = User::where('store_id', '=', $order->store_id)->get();
 
-        Notification::send($users,new OrderCreatedNotification($order));
+        Notification::send($users, new OrderCreatedNotification($order));
 
     }
 }

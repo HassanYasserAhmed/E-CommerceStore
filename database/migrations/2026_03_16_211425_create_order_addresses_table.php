@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('order_addresses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constraine('orders')->cascadeOnDelete();
-            $table->enum('type',['billing','shipping']);
+            $table->enum('type', ['billing', 'shipping']);
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->nullable();
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('city');
             $table->string('postal_code')->nullable();
             $table->string('state')->nullable();
-            $table->string('country',2);
+            $table->string('country', 2);
             $table->timestamps();
         });
     }

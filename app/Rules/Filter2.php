@@ -14,7 +14,7 @@ class Filter2 implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if($value == 'laravel2') {
+        if ($value == 'laravel2') {
             $fail('2The value of '.$attribute.' cannot be '.$value);
         }
     }
