@@ -23,4 +23,8 @@ class Admin extends User
         'password',
         'remember_token',
     ];
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 }

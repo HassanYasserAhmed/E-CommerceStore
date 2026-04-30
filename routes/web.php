@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Front\Auth\TwoFactorAuthenticationController;
 use App\Http\Controllers\Front\CartController;
@@ -28,8 +27,9 @@ Route::group([
 ], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/contact',[HomeController::class, 'contact'])->name('contact');
-    Route::get('/blog-grid-sidebar',[HomeController::class, 'BlogGridSideBar'])->name('blog-grid-sidebar');
     Route::get('/about-us',[HomeController::class, 'AboutUs'])->name('about-us');
+    Route::get('/faq',[HomeController::class, 'HaventFountTheAnswer'])->name('faq');
+    Route::get('/products-list', [ProductsController::class, 'getProductList'])->name('product.list');
     Route::get('/products', [ProductsController::class, 'index'])->name('product.index');
     Route::get('/products/{product:slug}', [ProductsController::class, 'show'])->name('product.show');
     Route::resource('cart', CartController::class);
@@ -45,6 +45,7 @@ Route::group([
     // });
 
     Route::post('currency', [CurrencyConverterController::class, 'store'])->name('currency.store');
+
 });
 
 Route::get('auth/{provider}/redirect', [SocialLoginController::class, 'redirect'])
@@ -63,3 +64,12 @@ Route::get('orders/{order}pay/stripe/return', [PaymentsController::class, 'confi
 Route::any('stripe/webhook', [StripeWebhooksController::class, 'handle'])->name('stripe.webhook');
 // require __DIR__.'/auth.php';
 require __DIR__.'/dashboard.php';
+    Route::get('not-found', function () {
+    return view('front.error404');
+})->name('not-found');
+
+
+Route::fallback(function () {
+        return response()->view('front.error404', [], 404);
+    });
+

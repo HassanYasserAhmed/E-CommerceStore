@@ -77,6 +77,5 @@ class CheckoutController extends Controller
             DB::rollBack();
             throw $e;
         }
-
     }
 }

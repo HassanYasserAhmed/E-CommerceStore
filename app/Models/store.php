@@ -14,4 +14,8 @@ class store extends Model
     {
         return $this->hasMany(product::class);
     }
+    public function admins()
+    {
+        return $this->hasMany(Admin::class);
+    }
 }

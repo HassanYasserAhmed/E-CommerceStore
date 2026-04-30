@@ -13,7 +13,6 @@ class HomeController extends Controller
             ->latest()
             ->limit(8)
             ->get();
-
         return view('front.home', compact('products'));
 
     }
@@ -21,10 +20,10 @@ class HomeController extends Controller
     {
         return view('front.contact');
     }
-    public function BlogGridSideBar() {
-        return view('front.blog-grid-sidbar');
-    }
     public function AboutUs() {
         return view('front.about-us');
+    }
+    public function HaventFountTheAnswer() {
+        return view('front.faq');
     }
 }
