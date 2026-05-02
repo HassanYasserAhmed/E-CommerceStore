@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Front;
 use App\Facades\Stripe;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\Payment;
+use App\Services\PaymentService;
 use Illuminate\Http\Request;
+
 class PaymentsController extends Controller
 {
+    public function __construct() {}
     public function create(Order $order)
     {
         return view('front.payments.create', [
@@ -17,10 +19,24 @@ class PaymentsController extends Controller
     }
     public function createStripePaymentIntent(Order $order)
     {
-         return Stripe::createIntent($order);
+        $paymentIntent = Stripe::createIntent($order);
+
+        return response()->json([
+            'clientSecret' => $paymentIntent->client_secret,
+        ]);
     }
     public function confirm(Request $request, Order $order)
     {
-        return Stripe::confirmPayment($order,$request->query('payment_intent'));
+        $paymentIntent = Stripe::confirmPayment($order, $request->query('payment_intent'));
+
+        if ($paymentIntent->status == "succeeded") {
+            return redirect()->route('home')
+                ->with('success', 'Payment Done Successfully!');
+        }
+
+        return redirect()->route('checkout', [
+            'order' => $order,
+            'status' => $paymentIntent->status,
+        ]);
     }
 }

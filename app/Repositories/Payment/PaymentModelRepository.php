@@ -17,8 +17,8 @@ class PaymentModelRepository implements PaymentRepository {
             ])->save();
     }
     public function confirm($order_id,$paymentIntent) {
-         $payment = Payment::where('order_id', $order_id)->first();
-        $payment->forceFill([
+        $payment = Payment::where('order_id', $order_id)->first();
+        $payment->fill([
             'status' => 'completed',
             'transaction_data' =>json_encode($paymentIntent),
         ])->save();

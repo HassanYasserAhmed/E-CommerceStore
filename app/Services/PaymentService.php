@@ -1,15 +1,12 @@
 <?php
 namespace App\Services;
 
-use App\Models\Payment;
-use App\Repositories\Payment\PaymentModelRepository;
-use PaymentRepository;
+use App\Repositories\Payment\PaymentRepository;
 
 class PaymentService {
-    protected $paymentRepository;
-    public function __construct() {
-        $this->paymentRepository = new PaymentModelRepository();
-    }
+    public function __construct(
+        protected PaymentRepository $paymentRepository
+        ) {}
     public function create($order_id,$paymentIntent) {
         return $this->paymentRepository->create($order_id, $paymentIntent);
    } 
