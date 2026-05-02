@@ -1,8 +1,12 @@
 <?php
 namespace App\Providers;
 
+use App\Repositories\Cart\CartModelRepository;
+use App\Repositories\Cart\CartRepository;
 use App\Repositories\Payment\PaymentModelRepository;
 use App\Repositories\Payment\PaymentRepository as PaymentPaymentRepository;
+use App\Repositories\Product\ProductModeleRepository;
+use App\Repositories\Product\ProductRepository;
 use App\Services\CurrencyConverter;
 use App\Services\PaymentService;
 use App\Services\StripePaymentService;
@@ -19,6 +23,12 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind('currency.converter', function () {
             return new CurrencyConverter(config('services.currency_converter.api_key'));
+        });
+         $this->app->bind(CartRepository::class, function () {
+            return new CartModelRepository();
+        });
+         $this->app->bind(ProductRepository::class,function(){
+            return new ProductModeleRepository;
         });
          $this->app->bind(PaymentService::class, function ($app) {
             return new PaymentService($app->make(PaymentPaymentRepository::class));

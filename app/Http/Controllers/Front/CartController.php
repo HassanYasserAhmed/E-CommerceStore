@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use App\Models\Product;
-use App\Repositories\Cart\CartModelRepository;
+use App\Repositories\Cart\CartRepository;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -12,17 +13,15 @@ class CartController extends Controller
     /**
      * Display a listing of the resource.
      */
-    protected $cart;
 
-    public function __construct(CartModelRepository $cart)
+    public function __construct(protected CartRepository $repo)
     {
-        $this->cart = $cart;
     }
 
-    public function index()
+    public function index(Cart $cart)
     {
         return view('front.cart', [
-            'cart' => $this->cart,
+            'cart' => $cart,
         ]);
     }
 
@@ -37,7 +36,7 @@ class CartController extends Controller
         ]);
 
         $product = Product::findOrFail($request->post('product_id'));
-        $this->cart->add($product, $request->post('quantity'));
+        $this->repo->add($product, $request->post('quantity'));
 
         if ($request->expectsJson()) {
             return response()->json([
@@ -56,7 +55,7 @@ class CartController extends Controller
         $request->validate([
             'quantity' => ['required', 'int', 'min:1'],
         ]);
-        $this->cart->update($id, $request->post('quantity'));
+        $this->repo->update($id, $request->post('quantity'));
     }
 
     /**
@@ -64,7 +63,7 @@ class CartController extends Controller
      */
     public function destroy($id)
     {
-        $this->cart->delete($id);
+       $this->repo->delete($id);
 
         return [
             'message' => 'item deleted successfully',
