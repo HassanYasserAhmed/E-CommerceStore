@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\StripeService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Stripe\Stripe;
 
 class StripeWebhooksController extends Controller
 {
     public function handle(Request $request)
     {
-        $payload = $request->getContent();
-        Log::debug('webhook event received', json_decode($payload, true));
+       StripeService::handle($request);
     }
 }

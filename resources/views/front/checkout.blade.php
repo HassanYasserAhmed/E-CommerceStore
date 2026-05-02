@@ -254,9 +254,7 @@
                                     </section>
                                 </li>
                                 <li>
-                                    <h6 class="title collapsed" data-bs-toggle="collapse" data-bs-target="#collapsefive"
-                                        aria-expanded="false" aria-controls="collapsefive">Payment Info</h6>
-                                    <section class="checkout-steps-form-content collapse" id="collapsefive"
+                                    <div id="collapsefive"
                                         aria-labelledby="headingFive" data-bs-parent="#accordionExample">
                                         <div class="row">
                                             <div class="col-12">
@@ -267,7 +265,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </section>
+                                    </div>
                                 </li>
                             </ul>
                         </div>

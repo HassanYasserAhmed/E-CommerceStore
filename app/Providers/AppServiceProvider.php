@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Services\CurrencyConverter;
+use App\Services\StripePaymentService;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use PaymentRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind('currency.converter', function () {
             return new CurrencyConverter(config('services.currency_converter.api_key'));
+        });
+        $this->app->bind(StripePaymentService::class, function ($app) {
+            return new StripePaymentService();
         });
     }
 

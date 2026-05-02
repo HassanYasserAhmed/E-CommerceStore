@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace App\Providers\RepositoryServiceProviders;
 
 use App\Repositories\Cart\CartModelRepository;
 use App\Repositories\Cart\CartRepository;

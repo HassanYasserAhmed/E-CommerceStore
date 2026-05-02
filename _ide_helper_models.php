@@ -23,10 +23,12 @@ namespace App\Models{
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int $store_id
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role> $roles
  * @property-read int|null $roles_count
+ * @property-read \App\Models\store|null $store
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
  * @method static \Database\Factories\AdminFactory factory($count = null, $state = [])
@@ -40,6 +42,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Admin wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Admin wherePhoneNumber($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Admin whereStoreId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereSuperAdmin($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereUsername($value)
@@ -91,6 +94,8 @@ namespace App\Models{
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderAddress> $addresses
  * @property-read int|null $addresses_count
  * @property-read \App\Models\OrderAddress|null $billingAddress
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\OrderItem> $orderItems
+ * @property-read int|null $order_items_count
  * @property-read \App\Models\OrderItem $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product> $products
  * @property-read int|null $products_count
@@ -459,6 +464,8 @@ namespace App\Models{
  * @property string $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Admin> $admins
+ * @property-read int|null $admins_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product> $products

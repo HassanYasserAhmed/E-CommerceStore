@@ -67,7 +67,7 @@ class CheckoutController extends Controller
                 }
             }
             //  event('order.created',$order,Auth::user());
-            event(new OrderCreated($order));
+            // event(new OrderCreated($order));
 
             DB::commit();
 
