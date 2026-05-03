@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\product;
-use Illuminate\Http\Request;
+use App\Services\ProductService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class ProductsController extends Controller
 {
-    public function __construct()
+    public function __construct(protected ProductService $productService)
     {
         $this->authorizeResource(product::class, 'product');
         $this->middleware('auth:sanctum')->except(['index', 'show']);
@@ -20,8 +21,7 @@ class ProductsController extends Controller
      */
     public function index(Request $request)
     {
-
-        return Product::filter($request->query())->with('category', 'store')->paginate(10);
+        return $this->productService->getProductsForApi($request);
     }
 
     /**
@@ -44,8 +44,8 @@ class ProductsController extends Controller
             'price' => 'required|numeric |min:0',
             'compare_price' => 'nullable|numeric|gt:price',
         ]);
-        $Product = Product::create($request->all());
 
+        $Product = $this->productService->create($request->all());
         return $Product;
     }
 
@@ -54,7 +54,7 @@ class ProductsController extends Controller
      */
     public function show(Product $product)
     {
-        return $product->load('category', 'store', 'tags');
+        return $this->productService->showModel($product);
     }
 
     /**
@@ -75,9 +75,7 @@ class ProductsController extends Controller
             'price' => 'required|numeric |min:0',
             'compare_price' => 'nullable|numeric|gt:price',
         ]);
-        $product->update($request->all());
-
-        return $product;
+       return $this->productService->update($product, $request->all());
     }
 
     /**
@@ -90,7 +88,7 @@ class ProductsController extends Controller
         if (! Auth::user()->tokenCan('product.delete')) {
             abort(403, 'Unauthorized');
         }
-        $product = Product::destroy(19);
+        $product = $this->productService->deleteByID($id);
 
         return response()->json([
             'message' => 'Product deleted successfully',

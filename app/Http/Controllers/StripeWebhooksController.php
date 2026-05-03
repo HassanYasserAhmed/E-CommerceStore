@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Facades\StripeService;
+use App\Facades\Stripe;
 use Illuminate\Http\Request;
-use Stripe\Stripe;
 
 class StripeWebhooksController extends Controller
 {
     public function handle(Request $request)
     {
-       StripeService::handle($request);
+       Stripe::handle($request);
     }
 }
