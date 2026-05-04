@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Front;
 use App\Facades\Stripe;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Services\PaymentService;
 use Illuminate\Http\Request;
 
 class PaymentsController extends Controller

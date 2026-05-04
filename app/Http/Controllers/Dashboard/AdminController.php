@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use AdminRepository;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
-use App\Models\Role;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -12,14 +12,14 @@ class AdminController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function __constract()
+    public function __construct(protected AdminRepository $adminRepository)
     {
         $this->authorizeResource(Admin::class, 'admin');
     }
 
     public function index()
     {
-        $admins = Admin::all();
+        $admins =$this->adminRepository->all();
 
         return view('dashboard.admin.index', compact('admins'));
     }
@@ -45,7 +45,7 @@ class AdminController extends Controller
      */
     public function show(Admin $admin)
     {
-        $admin->load('roles');
+       $admin = $this->adminRepository->findModel($admin);
 
         return view('dashboard.admin.show', compact('admin'));
     }
@@ -55,10 +55,9 @@ class AdminController extends Controller
      */
     public function edit(Admin $admin)
     {
-        $roles = Role::all();
-        $admin_roles = $admin->roles()->pluck('id')->toArray();
-
-        return view('dashboard.admin.edite', compact('admin', 'roles', 'admin_roles'));
+       $data = $this->adminRepository->getEditData($admin);
+       
+        return view('dashboard.admin.edite', array_merge($data,['admin'=>$admin]));
     }
 
     /**
@@ -66,7 +65,7 @@ class AdminController extends Controller
      */
     public function update(Request $request, Admin $admin)
     {
-        $admin->roles()->sync($request->roles);
+       $this->adminRepository->syncRoles($admin,$request->roles);
 
         return redirect()->route('admin.index')->with('success', 'Admin updated successfully');
     }
@@ -81,7 +80,7 @@ class AdminController extends Controller
 
     public function trash()
     {
-        $admins = Admin::onlyTrashed()->get();
+        $admins = $this->adminRepository->getTrashedAdmins();
 
         return view('dashboard.admin.trash', compact('admins'));
     }
