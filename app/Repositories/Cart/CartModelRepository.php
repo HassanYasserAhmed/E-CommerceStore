@@ -25,9 +25,12 @@ class CartModelRepository implements CartRepository
         return $this->items;
     }
 
-    public function add(Product $product, $quantity = 1)
+    public function add($id, $quantity = 1)
     {
+        $product = Product::findOrFail($id);
+
         $item = Cart::where('product_id', $product->id)->first();
+        
         if (! $item) {
             $cart = Cart::create([
                 'user_id' => Auth::id(),
@@ -41,8 +44,8 @@ class CartModelRepository implements CartRepository
         }
 
         return $item->increment('quantity', $quantity);
-
     }
+
 
     public function update($id, $quantity)
     {

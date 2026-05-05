@@ -16,9 +16,13 @@ use App\Services\StripePaymentService;
 use CategoryModelRepository;
 use CategoryRepository;
 use CategoryService;
+use CheckoutModelRepository;
+use CheckoutRepository;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
+use RoleModelRepository;
+use RoleRepository;
 use TagModelRepository;
 use TagRepository;
 
@@ -41,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CategoryRepository::class, CategoryModelRepository::class);
         $this->app->bind(TagRepository::class, TagModelRepository::class);
         $this->app->bind(AdminRepository::class, AdminModelRepository::class);
+        $this->app->bind(RoleRepository::class,RoleModelRepository::class);
+        $this->app->bind(CheckoutRepository::class,CheckoutModelRepository::class);
     }
 
     /**

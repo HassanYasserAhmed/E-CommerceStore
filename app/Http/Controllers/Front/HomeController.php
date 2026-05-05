@@ -4,15 +4,14 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\product;
+use App\Repositories\Product\ProductRepository;
 
 class HomeController extends Controller
 {
+    public function __construct(protected ProductRepository $productRepository){}
     public function index()
     {
-        $products = Product::with('category')->active()
-            ->latest()
-            ->limit(8)
-            ->get();
+        $products = $this->productRepository->getActiveProducts();
         return view('front.home', compact('products'));
 
     }

@@ -3,14 +3,19 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\StoreRoleRequest;
+use App\Http\Requests\Web\UpdateRoleRequest;
 use App\Models\Role;
-use Illuminate\Http\Request;
+use RoleRepository;
 
 class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    public function __construct(
+        protected RoleRepository $roleRepository
+    ) {}
     public function index()
     {
         $roles = Role::paginate();
@@ -31,20 +36,14 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'abilities' => 'required|array',
-        ]);
-
-        Role::createWithAbilities($request);
+        $this->roleRepository->createWithAbilities($request->validated());
 
         return redirect()
             ->route('roles.index')
             ->with('success', 'Role created successfully.');
     }
-
     /**
      * Display the specified resource.
      */
@@ -58,7 +57,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        $role_abilities = $role->abilities()->pluck('type', 'ability')->toArray();
+       $roleAbilities = $this->roleRepository->getRoleAbilities($role);
 
         return view('dashboard.roles.edit', compact('role', 'role_abilities'));
     }
@@ -66,14 +65,9 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Role $role)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'abilities' => 'required|array',
-        ]);
-
-        $role->updateWithAbilities($request);
+        $this->roleRepository->updateWithAbilities($role, $request->validated());
 
         return redirect()
             ->route('roles.index')
@@ -85,7 +79,7 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        Role::destroy($id);
+        $this->roleRepository->destroy($id);
 
         return redirect()->route('roles.index')
             ->with('success', 'Role deleted successfully.');

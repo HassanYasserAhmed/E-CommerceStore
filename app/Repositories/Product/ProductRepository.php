@@ -17,4 +17,5 @@ interface ProductRepository
     public function getProductsWithRelations(array $relations);
     public function getCreateFormData();
     public function getProductsForDashboard();
+    public function getActiveProducts();
 }

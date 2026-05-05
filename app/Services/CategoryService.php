@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\category;
-
 class CategoryService extends FileService
 {
     public function __construct(protected CategoryRepository $categoryRepository) {}

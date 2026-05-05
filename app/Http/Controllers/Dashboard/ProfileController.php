@@ -3,34 +3,27 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Symfony\Component\Intl\Countries;
-use Symfony\Component\Intl\Languages;
+use App\Http\Requests\Api\UpdateProductRequest;
+use ProfileRepository;
+use ProfileService;
 
 class ProfileController extends Controller
 {
+    public function __construct(
+        protected ProfileRepository $profileRepository,
+        protected ProfileService $profileService
+    ) {}
     public function edit()
     {
-        $user = Auth::user();
-        $countries = Countries::getNames();
-        $locales = Languages::getNames();
+        $data = $this->profileService->getEditData();
 
-        return view('dashboard.profile.edite', compact('user', 'countries', 'locales'));
+        return view('dashboard.profile.edite', $data);
     }
 
-    public function update(Request $request)
+    public function update(UpdateProductRequest $request)
     {
-        $request->validate([
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'birth_date' => ['nullable', 'date', 'before:today'],
-            'gender' => ['in:male,female'],
-            'country' => ['required', 'string', 'max:20'],
-        ]);
-        $user = $request->user();
 
-        $user->profile->fill($request->all())->save();
+        $this->profileRepository->update($request->user(), $request->validated());
 
         return redirect()->route('profile.edite')->with('success', 'Profile updated successfully');
     }

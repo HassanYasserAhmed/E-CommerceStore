@@ -57,4 +57,10 @@ class ProductModeleRepository implements ProductRepository
      {
          return $this->getProductsWithRelations(['category', 'store']);
      }
+     public function getActiveProducts() {
+       return Product::with('category')->active()
+            ->latest()
+            ->limit(8)
+            ->get();
+     }
 }
