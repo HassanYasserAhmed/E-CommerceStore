@@ -6,23 +6,18 @@ use Illuminate\Support\Facades\Request;
 
 class CategoryModelRepository implements CategoryRepository
 {
-    public function all()
-    {
-        return category::all();
-    }
     public function getAll()
     {
-        $query = Category::query();
-        $categories = Category::with('parent', 'products')
+        return Category::with('parent', 'products')
             ->filter(Request::query())
             ->select('categories.*')->withCount('products')
-            ->paginate();
+            ->paginate(5);
     }
     public function getCreateData()
     {
         return [
-            'parents' => $this->all(),
-            'category' => new Category
+            'category' => new Category,
+            'parents' =>Category::all(),
         ];
     }
     public function create(array $data) {}

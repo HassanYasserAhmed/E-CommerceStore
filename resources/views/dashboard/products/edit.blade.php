@@ -7,6 +7,6 @@
     @csrf
    @include('dashboard.products._form',[
    'button_label' =>'update'
-   ]);
+   ])
 </form>
 @endsection

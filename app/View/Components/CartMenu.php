@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Models\Cart;
 use App\Repositories\Cart\CartRepository;
 use Closure;
 use Illuminate\Contracts\View\View;
@@ -17,11 +18,10 @@ class CartMenu extends Component
     public $total;
     public $count;
 
-    public function __construct(protected CartRepository $cart)
+    public function __construct(protected Cart $cart)
     {
-        $this->items = $this->cart->get();
-        $this->total = $this->cart->total();
-        $this->count= $this->cart->count();
+        $this->items = $cart->get();
+        $this->count= $cart->count();
     }
 
     /**

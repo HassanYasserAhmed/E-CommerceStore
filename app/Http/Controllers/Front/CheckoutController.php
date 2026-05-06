@@ -6,7 +6,6 @@ use App\Exceptions\InvalidOrderException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\StoreCheckoutRequest;
 use App\Models\Cart;
-use App\Repositories\Cart\CartRepository;
 use App\Repositories\Checkout\CheckoutRepository;
 use Symfony\Component\Intl\Countries;
 
@@ -15,14 +14,14 @@ class CheckoutController extends Controller
     public function __construct(
         protected CheckoutRepository $checkoutRepository
     ){}
-    public function create(CartRepository $cart)
+    public function create(Cart $cart)
     {
         if ($cart->get()->count() == 0) {
             throw new InvalidOrderException('cart is Empty');
         }
-
         return view('front.checkout', [
             'cart' => $cart,
+            'count'=>$cart->count(),
             'countries' => Countries::getNames(),
         ]);
     }

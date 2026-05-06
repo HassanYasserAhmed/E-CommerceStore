@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Repositories\Admin;
 use App\Models\Admin;
 
 interface AdminRepository

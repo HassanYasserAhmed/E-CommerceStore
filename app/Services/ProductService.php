@@ -23,7 +23,7 @@ class ProductService
         $product = $this->productRepository->find($id);
         return [
         'product' => $product,
-        'categories' => $this->categoryRepository->all(),
+        'categories' => $this->categoryRepository->getAll(),
         'tags' => $product->tags->pluck('name')->implode(','),
       ];
     }

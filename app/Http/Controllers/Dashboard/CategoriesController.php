@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\category;
-use CategoryRepository;
-use CategoryService;
+use App\Repositories\Category\CategoryRepository;
+use App\Services\CategoryService;
 use Exception;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
@@ -21,10 +20,7 @@ class CategoriesController extends Controller
     ) {}
     public function index(Request $request)
     {
-        Gate::authorize('categories.view');
-
         $categories = $this->categoryRepository->getAll();
-
         return view('dashboard.categories.index', compact('categories'));
     }
 
@@ -33,8 +29,6 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        Gate::authorize('categories.create');
-
         $data = $this->categoryRepository->getCreateData();
 
         return view('dashboard.categories.create', $data);
@@ -45,7 +39,6 @@ class CategoriesController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        Gate::authorize('categories.create');
         $request->validate(rules: Category::rules());
 
         $request->merge([
@@ -62,7 +55,6 @@ class CategoriesController extends Controller
      */
     public function show(Category $category)
     {
-        Gate::authorize('categories.view');
 
         return view('dashboard.categories.show', compact('category'));
     }
@@ -72,12 +64,11 @@ class CategoriesController extends Controller
      */
     public function edit(string $id)
     {
-        Gate::authorize('categories.update');
         try {
             $data = $this->categoryRepository->getEditeData($id);
-
-            return view('dashboard.categories.edite', compact($data));
+            return view('dashboard.categories.edite',$data);
         } catch (Exception $e) {
+            throw $e;
             return redirect()->route('categories.index')->with('info', 'category not found');
         }
     }
@@ -87,7 +78,6 @@ class CategoriesController extends Controller
      */
     public function update(CategoryRequest $request, string $id)
     {
-        Gate::authorize('categories.update');
         $data = $request->except('image');
 
         $this->categoryService->update($request, $id, $data);
@@ -100,8 +90,6 @@ class CategoriesController extends Controller
      */
     public function destroy(string $id)
     {
-        Gate::authorize('categories.delete');
-
         $this->categoryService->destroy($id);
 
         return Redirect::route('categories.index')->with('success', 'category deleted successfully');
@@ -123,7 +111,6 @@ class CategoriesController extends Controller
 
     public function forceDelete($id)
     {
-        gate::authorize('categories.delete');
         $this->categoryService->forceDelete($id);
 
         return redirect()->route('categories.trash')->with('success', 'category deleted permanently');

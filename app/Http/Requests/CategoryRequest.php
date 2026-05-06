@@ -26,18 +26,11 @@ class CategoryRequest extends FormRequest
      */
     public function rules($id = 0): array
     {
-        $request = $this->request->all();
-        $customValidate = function ($attrubute, $value, $fail) {
-            if ($value == 'laravel') {
-                $fail('The value of '.$attrubute.' cannot be '.$value);
-            }
-        };
-
         $id = $this->route('category');
 
         return [
             'name' => [
-                'required', 'alpha_dash', 'min:3', 'max:255', 'unique:categories,name,'.$id, 'filter',
+                'required', 'min:3', 'max:255', 'unique:categories,name,'.$id, 'filter',
             ],
             'parent_id' => [
                 'int', 'exists:categories,id',

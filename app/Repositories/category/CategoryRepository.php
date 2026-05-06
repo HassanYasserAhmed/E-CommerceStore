@@ -3,7 +3,6 @@ namespace App\Repositories\Category;
 
 interface CategoryRepository
 {
-    public function all();
     public function findByID($id);
     public function getAll();
     public function getCreateData();

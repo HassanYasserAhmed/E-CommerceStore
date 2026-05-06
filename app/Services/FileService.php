@@ -1,7 +1,7 @@
 <?php
 namespace App\Services;
 
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class FileService {
     protected function uploadImages(Request $request)

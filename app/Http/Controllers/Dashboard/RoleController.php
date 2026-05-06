@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\StoreRoleRequest;
 use App\Http\Requests\Web\UpdateRoleRequest;
 use App\Models\Role;
-use RoleRepository;
+use App\Repositories\Role\RoleRepository;
 
 class RoleController extends Controller
 {

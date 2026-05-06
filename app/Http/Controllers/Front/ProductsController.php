@@ -19,10 +19,6 @@ class ProductsController extends Controller
         if ($product->status != 'active') {
             abort(404);
         }
-
         return view('front.products.show', compact('product'));
-    }
-    public function getProductList() {
-        return view('front.product-list');
     }
 }

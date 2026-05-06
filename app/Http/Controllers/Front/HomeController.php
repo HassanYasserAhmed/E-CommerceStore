@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Models\product;
 use App\Repositories\Cart\CartRepository;
 use App\Repositories\Product\ProductRepository;
 

@@ -1,7 +1,8 @@
 <?php
-
+namespace App\Repositories\Role;
 use App\Models\Role;
 use App\Models\RoleAbility;
+use Illuminate\Support\Facades\DB;
 
 class RoleModelRepository implements RoleRepository
 {
