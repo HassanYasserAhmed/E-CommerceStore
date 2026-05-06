@@ -1,16 +1,17 @@
 <?php
 namespace App\Services;
+
+use App\Repositories\Category\CategoryRepository;
 use App\Repositories\Product\ProductRepository;
 use Arr;
-use CategoryService;
 use Illuminate\Support\Facades\Auth;
-use TagService;
+use App\Services\TagService;
 
 class ProductService
 {
     public function __construct(
         protected ProductRepository $productRepository,
-        protected CategoryService $categoryRepository,
+        protected CategoryRepository $categoryRepository,
         protected TagService $tagService,
     ) {}
     public function storeFromDashboard(array $data)

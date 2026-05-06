@@ -1,4 +1,5 @@
 <?php
+namespace App\Repositories\Tag;
 use App\Models\Tag;
 
 class TagModelRepository implements TagRepository {

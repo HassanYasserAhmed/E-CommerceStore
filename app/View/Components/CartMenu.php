@@ -15,11 +15,13 @@ class CartMenu extends Component
     public $items;
 
     public $total;
+    public $count;
 
     public function __construct(protected CartRepository $cart)
     {
         $this->items = $this->cart->get();
         $this->total = $this->cart->total();
+        $this->count= $this->cart->count();
     }
 
     /**

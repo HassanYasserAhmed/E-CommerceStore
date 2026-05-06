@@ -1,4 +1,9 @@
 <?php
+namespace App\Services;
+
+use App\Repositories\Tag\TagRepository;
+use Str;
+
 class TagService {
      public function __construct(
         protected TagRepository $tagRepository

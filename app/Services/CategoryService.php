@@ -1,4 +1,7 @@
 <?php
+namespace App\Services;
+use App\Repositories\Category\CategoryRepository;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryService extends FileService
 {

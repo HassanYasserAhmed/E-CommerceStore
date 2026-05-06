@@ -1,8 +1,13 @@
 <?php
+namespace App\Repositories\Checkout;
 
+use App\Events\CartCleared;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class CheckoutModelRepository implements CheckoutRepository
 {
@@ -32,7 +37,7 @@ class CheckoutModelRepository implements CheckoutRepository
                     ]);
                 }
 
-                foreach ($data->post('addr') as $type => $address) {
+                foreach ($data['addr'] as $type => $address) {
                     $address['type'] = $type;
                     $order->addresses()->create($address);
                 }
@@ -41,8 +46,9 @@ class CheckoutModelRepository implements CheckoutRepository
             // event(new OrderCreated($order));
 
             DB::commit();
+            event (new CartCleared());
+            return $order;
 
-            return redirect()->route('orders.payment.create', $order->id);
         } catch (Throwable $e) {
             DB::rollBack();
             throw $e;

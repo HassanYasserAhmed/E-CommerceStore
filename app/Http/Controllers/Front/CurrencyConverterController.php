@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use CurrencyConverterService;
+use App\Services\CurrencyConverterService;
 use Illuminate\Http\Request;
 
 class CurrencyConverterController extends Controller

@@ -20,9 +20,8 @@ class CartController extends Controller
 
     public function index(Cart $cart)
     {
-        return view('front.cart', [
-            'cart' => $cart,
-        ]);
+        $total = $this->cartepository->total();
+        return view('front.cart', compact('cart','total'));
     }
 
     /**
@@ -30,7 +29,7 @@ class CartController extends Controller
      */
     public function store(StoreCartRequest $request)
     {
-        $request->validateed();
+        $request->validated();
         
         $product_id=$request->post('product_id');
 

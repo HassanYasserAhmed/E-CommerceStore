@@ -1,4 +1,5 @@
 <?php
+namespace App\Repositories\Category;
 
 use App\Models\category;
 use Illuminate\Support\Facades\Request;

@@ -21,6 +21,9 @@ class ProductPolicy extends ModelPolicy
 
         return true;
     }
+    public function viewAny() {
+        return true;
+    }
 
     // /**
     //  * Determine whether the user can view any models.

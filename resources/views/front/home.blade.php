@@ -2,12 +2,8 @@
     <x-home.hero-area />
     <x-home.featured-categories />
     <x-home.trending-products :products="$products" />
-    <x-home.banner />
     <x-home.special-offer />
-    <x-home.home-product-list :products="$products" />
     <x-home.brands />
-    <x-home.blog-section />
-    <x-home.blog-section />
     <x-home.shopping-info />
     @push('scripts')
         <script type="text/javascript">

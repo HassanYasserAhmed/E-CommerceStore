@@ -6,7 +6,7 @@ use App\Models\category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Request;
 
-class ProductModeleRepository implements ProductRepository
+class ProductModelRepository implements ProductRepository
 {
     public function all()
     {

@@ -4,15 +4,18 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Models\product;
+use App\Repositories\Cart\CartRepository;
 use App\Repositories\Product\ProductRepository;
 
 class HomeController extends Controller
 {
-    public function __construct(protected ProductRepository $productRepository){}
+    public function __construct(protected ProductRepository $productRepository
+    ,protected CartRepository $cartRepository){}
     public function index()
     {
         $products = $this->productRepository->getActiveProducts();
-        return view('front.home', compact('products'));
+        $cart_count = $this->cartRepository->count();
+        return view('front.home', compact('products','cart_count'));
 
     }
     public function contact()

@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Facades\Cart;
+use App\Models\Cart;
 
 class EmptyCart
 {
@@ -19,6 +19,6 @@ class EmptyCart
      */
     public function handle($event): void
     {
-        Cart::empty();
+       $cart->empty();
     }
 }

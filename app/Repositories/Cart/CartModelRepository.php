@@ -30,7 +30,7 @@ class CartModelRepository implements CartRepository
         $product = Product::findOrFail($id);
 
         $item = Cart::where('product_id', $product->id)->first();
-        
+
         if (! $item) {
             $cart = Cart::create([
                 'user_id' => Auth::id(),
@@ -75,5 +75,12 @@ class CartModelRepository implements CartRepository
         return (float) $this->items->sum(function ($item) {
             return $item->quantity * $item->product->price;
         });
+    }
+    public function count()
+    {
+        if (!Auth::check()) {
+            return 0;
+        }
+        return Cart::where('user_id', Auth::user()->id)->count() ?? 0;
     }
 }

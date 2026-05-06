@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Front;
 
 use App\Exceptions\InvalidOrderException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\StoreCheckoutRequest;
 use App\Models\Cart;
 use App\Repositories\Cart\CartRepository;
-use CheckoutRepository;
-use Illuminate\Http\Request;
+use App\Repositories\Checkout\CheckoutRepository;
 use Symfony\Component\Intl\Countries;
 
 class CheckoutController extends Controller
@@ -27,10 +27,12 @@ class CheckoutController extends Controller
         ]);
     }
 
-    public function store(Request $request, Cart $cart)
+    public function store(StoreCheckoutRequest $request, Cart $cart)
     {
+        // dd($request->alll(),$request->validated());
        $data= $request->validated();
 
-       $this->checkoutRepository->Store($data,$cart);
+      $order= $this->checkoutRepository->Store($data,$cart);
+     return redirect()->route('orders.payment.create', $order->id);
     }
 }

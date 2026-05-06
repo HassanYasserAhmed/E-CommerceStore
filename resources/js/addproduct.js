@@ -11,6 +11,7 @@
                 _token: csrf_token
             },success: response => {
                 alert('product added successfully');
+                window.location.href=checkoutUrl;;
             }
         })
     });

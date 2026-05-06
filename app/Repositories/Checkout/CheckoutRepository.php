@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Repositories\Checkout;
 use App\Models\Cart;
 
 interface CheckoutRepository {
