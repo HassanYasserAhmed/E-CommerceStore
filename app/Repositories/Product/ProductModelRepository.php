@@ -7,8 +7,8 @@ use App\Models\Flag;
 use App\Models\Product;
 use App\Models\Tag;
 use Arr;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request;
 use Str;
 
 class ProductModelRepository implements ProductRepository

@@ -3,59 +3,52 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Http\Requests\Api\StoreAccessToken;
+use App\Services\AccessTokenService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\PersonalAccessToken;
 
 class AccessTokensController extends Controller
 {
-    public function store(Request $request)
+    public function __construct(protected AccessTokenService $accessTokenService) {}
+
+    public function store(StoreAccessToken $request)
     {
-        $request->validate([
-            'email' => 'required|email|max:255',
-            'password' => 'required|string|max:255|min:8',
-            'device_name' => 'string|max:255',
-            'abilities' => 'nullable|array',
-        ]);
+        $data = $request->validated();
 
-        $user = User::where('email', $request->email)->first();
+        $userAgent = $request->userAgent();
 
-        if ($user && Hash::check($request->password, $user->password)) {
-            $device_name = $request->post('device_name', $request->userAgent());
-            $token = $user->createToken($device_name, $request->post('abilities'));
+        $result = $this->accessTokenService->createToken(
+            $data,
+            $userAgent
+        );
 
-            return response()->json([
-                'token' => $token->plainTextToken,
-                'user' => $user,
-            ], 201);
+        if (! $result) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        return response()->json([
-            'message' => 'Invalid credentials',
-        ], 401);
+        return response()->json($result, 201);
     }
 
     public function destroy($token = null)
     {
         $user = Auth::guard('sanctum')->user();
 
+        if (! $user) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
         if ($token === null) {
-            $user->currentAccessToken()->delete();
+            $this->accessTokenService->revokeCurrentToken($user);
 
-            return;
+            return response()->noContent();
         }
 
-        $personal_Access_Token = PersonalAccessToken::findToken($token);
+        $deleted = $this->accessTokenService->revokeTokenByString($user, $token);
 
-        if (
-            $user->id == $personal_Access_Token->tokenable_id
-            && $personal_Access_Token->tokenable_type == get_class($user)
-        ) {
-            $personal_Access_Token->delete();
-
-            return;
+        if (! $deleted) {
+            return response()->json(['message' => 'Token not found'], 404);
         }
+
+        return response()->noContent();
     }
 }

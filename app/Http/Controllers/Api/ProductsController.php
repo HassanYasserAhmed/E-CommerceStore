@@ -7,16 +7,15 @@ use App\Http\Requests\Api\StoreProductRequest;
 use App\Http\Requests\Api\UpdateProductRequest;
 use App\Models\product;
 use App\Repositories\Product\ProductRepository;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 
 class ProductsController extends Controller
 {
     public function __construct(
         protected ProductRepository $productRepository,
-        )
-    {
-        $this->authorizeResource(product::class, 'product');
+    ) {
+        
         $this->middleware('auth:sanctum')->except(['index', 'show']);
     }
 
@@ -33,7 +32,6 @@ class ProductsController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $this->authorize('create', product::class);
         $Product = $this->productRepository->store($request->validated());
         return $Product;
     }
@@ -42,8 +40,7 @@ class ProductsController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $this->authorize('update', $product);
-       return $this->productRepository->update($product, $request->validated());
+        return $this->productRepository->update($product, $request->validated());
     }
 
     /**
@@ -51,11 +48,6 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('delete', product::class);
-
-        if (! Auth::user()->tokenCan('product.delete')) {
-            abort(403, 'Unauthorized');
-        }
         $product = $this->productRepository->deleteByID($id);
 
         return response()->json([
