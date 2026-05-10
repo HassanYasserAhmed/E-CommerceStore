@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Repositories\Checkout\CheckoutRepository;
-
 class CheckoutService
 {
-    public function __construct(protected CheckoutRepository $checkoutRepository) {}
+    public function __construct(
+      
+    ) {}
     public function store($data, $cart)
     {
-        return $this->checkoutRepository->store($data, $cart);
+       
     }
 }

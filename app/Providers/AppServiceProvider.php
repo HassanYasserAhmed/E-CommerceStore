@@ -5,8 +5,6 @@ use App\Repositories\Cart\CartModelRepository;
 use App\Repositories\Cart\CartRepository;
 use App\Repositories\Category\CategoryModelRepository;
 use App\Repositories\Category\CategoryRepository;
-use App\Repositories\Checkout\CheckoutModelRepository;
-use App\Repositories\Checkout\CheckoutRepository;
 use App\Repositories\Payment\PaymentModelRepository;
 use App\Repositories\Payment\PaymentRepository;
 use App\Repositories\Product\ProductModelRepository;
@@ -34,7 +32,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CurrencyConverterService::class,CurrencyConverterService::class);
         $this->app->bind(PaymentRepository::class, PaymentModelRepository::class);
         $this->app->bind(CategoryRepository::class,CategoryModelRepository::class);
-        $this->app->bind(CheckoutRepository::class,CheckoutModelRepository::class);
     }
 
     /**

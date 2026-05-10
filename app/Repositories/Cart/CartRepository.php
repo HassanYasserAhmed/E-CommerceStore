@@ -2,13 +2,14 @@
 
 namespace App\Repositories\Cart;
 
+use App\Models\Cart;
 use App\Models\product;
 use Illuminate\Support\Collection;
 
 interface CartRepository
 {
     public function get(): Collection;
-
+    public function getCartItems(Cart $cart);
     public function add($id
     , $quantity = 1);
 

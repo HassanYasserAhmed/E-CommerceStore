@@ -171,9 +171,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         Laravel\Fortify\FortifyServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
-        App\Providers\RepositoryServiceProviders\CartServiceProvider::class,
-        App\Providers\RepositoryServiceProviders\ProductServiceProvider::class,
-
     ])->toArray(),
 
     /*

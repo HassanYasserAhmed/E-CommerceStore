@@ -83,4 +83,7 @@ class CartModelRepository implements CartRepository
         }
         return Cart::where('user_id', Auth::user()->id)->count() ?? 0;
     }
+    public function getCartItems(Cart $cart) {
+       return $cart->get()->all();
+    }
 }
